@@ -2,7 +2,14 @@ export const entriesReducer = (state, action) => {
   //En los reducers, no hacemos transformaciones de datos, solo actualizamos el estado
 
   switch (action.type) {
+    case "[ENTRIES] - Refresh data":
+      console.log("PAYPAL", action.payload);
+      return {
+        ...state,
+        entries: [...action.payload],
+      };
     case "[ENTRIES] - Add entry":
+      console.log("IN REDUCER", action.payload);
       return {
         ...state,
         entries: [...state.entries, action.payload],
@@ -11,7 +18,7 @@ export const entriesReducer = (state, action) => {
       return {
         ...state,
         entries: state.entries.map((entry) =>
-          entry.id === action.payload.id ? action.payload : entry
+          entry._id === action.payload._id ? action.payload : entry
         ),
       };
     default:

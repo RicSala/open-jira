@@ -1,6 +1,8 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { EntriesContext, entriesReducer } from ".";
 import { v4 as uuidv4 } from "uuid";
+import { db } from "../../database";
+import { entriesApi } from "../../apis";
 
 // {
 //     -id: string,
@@ -10,41 +12,18 @@ import { v4 as uuidv4 } from "uuid";
 // }
 
 const ENTRIES_INITIAL_STATE = {
-  entries: [
-    {
-      description:
-        "PENDIENTE - lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-      createdAt: Date.now(),
-      status: "pending",
-    },
-    {
-      description: "IN PROGRESS - incididunt ut labore et dolore magna aliqua",
-      createdAt: Date.now() - 1000000,
-      status: "in-progress",
-    },
-    {
-      description:
-        "FINISHED - consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-      createdAt: Date.now() - 5000000,
-      status: "finished",
-    },
-  ],
+  entries: [],
 };
 
 export const EntriesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITIAL_STATE);
 
-  const addNewEntry = (description) => {
-    const newEntry = {
-      id: uuidv4(),
-      description,
-      createdAt: Date.now(),
-      status: "pending",
-    };
-
+  const addNewEntry = async (description) => {
+    const resp = await entriesApi.post("/entries", { description });
+    console.log("resp-data:", resp.data);
     dispatch({
       type: "[ENTRIES] - Add entry",
-      payload: newEntry,
+      payload: resp.data.newEntry,
     });
   };
 
@@ -54,6 +33,20 @@ export const EntriesProvider = ({ children }) => {
       payload: entry,
     });
   };
+
+  const refreshEntries = async () => {
+    const resp = await entriesApi.get("/entries");
+    console.log("ENTRIES", resp.data);
+    dispatch({
+      type: "[ENTRIES] - Refresh data",
+      payload: resp.data,
+    });
+    return resp.data;
+  };
+
+  useEffect(() => {
+    refreshEntries();
+  }, []);
 
   return (
     <EntriesContext.Provider value={{ ...state, addNewEntry, onEntryUpdated }}>

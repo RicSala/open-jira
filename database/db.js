@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { Entry } from "../models";
 
 /**
  * 0 = disconnected

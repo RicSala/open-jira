@@ -7,9 +7,11 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { UIContext } from "../../context/ui";
+import { useRouter } from "next/router";
 
 export const EntryCard = ({ entry }) => {
   const [timeDifference, setTimeDifference] = useState(null);
+  const router = useRouter();
 
   const calculateTimeDifference = () => {
     const diff = Math.floor((Date.now() - entry.createdAt) / (1000 * 60));
@@ -39,6 +41,11 @@ export const EntryCard = ({ entry }) => {
     stopDragging();
   };
 
+  // on clickhandle will send the user to the entry page using the next router
+  const onClickHandler = () => {
+    router.push(`/entries/${entry._id}`);
+  };
+
   return (
     <>
       <Card
@@ -46,6 +53,7 @@ export const EntryCard = ({ entry }) => {
         draggable
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
+        onClick={onClickHandler}
       >
         <CardActionArea>
           <CardContent>

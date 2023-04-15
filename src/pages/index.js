@@ -11,6 +11,9 @@ const inter = Inter({ subsets: ["latin"] });
 // Ejemplo de como NO te deja usar variables de entorno en el back end (SECRET_KEY)
 // console.log(process.env.SECRET_KEY);
 
+// Why don't we just create a component for each of the columns?
+// Because the first one is a bit different, it has a form to add new entries.
+
 export default function HomePage() {
   return (
     <Layout title="Home Open Jira">

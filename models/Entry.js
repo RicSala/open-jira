@@ -21,8 +21,10 @@ const entrySchema = new Schema({
   },
 });
 
-// This is to avoid the error: OverwriteModelError: Cannot overwrite `Entry` model once compiled.
-// because once the model is compiled, it cannot be recompiled.
+// TODO: Review: why do we need to check if the model already exists?
+//
+console.log("MONGOOSE:", mongoose.models);
+
 const EntryModel = mongoose.models.Entry || model("Entry", entrySchema);
 
 export default EntryModel;

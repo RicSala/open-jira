@@ -32,6 +32,7 @@ const postEntry = async (req, res) => {
   const newEntry = new Entry({
     description,
     createdAt: Date.now(),
+    // other fields are set by default
   });
 
   try {

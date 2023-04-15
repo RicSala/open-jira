@@ -58,6 +58,7 @@ export const NewEntry = () => {
             value={inputValue}
             onChange={onFieldChange}
             onBlur={() => setTouched(true)}
+            // blur means that the user has left the field
           />
 
           <Box display="flex" justifyContent="space-between">

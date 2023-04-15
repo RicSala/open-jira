@@ -27,11 +27,19 @@ export const EntriesProvider = ({ children }) => {
     });
   };
 
-  const onEntryUpdated = (entry) => {
-    dispatch({
-      type: "[ENTRIES] - Entry Updated",
-      payload: entry,
-    });
+  const onEntryUpdated = async ({ _id, description, status }) => {
+    try {
+      const { data } = await entriesApi.put(`/entries/${_id}`, {
+        description,
+        status,
+      });
+      dispatch({
+        type: "[ENTRIES] - Entry Updated",
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const refreshEntries = async () => {

@@ -34,9 +34,7 @@ export const EntryList = ({ status }) => {
   const onDropEntry = useCallback(
     (e) => {
       const entryId = e.dataTransfer.getData("entryId");
-      console.log("entryId:", entryId);
       const updatedEntry = entries.filter((entry) => entry._id === entryId)[0];
-      console.log("dropped:", updatedEntry);
       updatedEntry.status = status;
       onEntryUpdated(updatedEntry);
       stopDragging();
